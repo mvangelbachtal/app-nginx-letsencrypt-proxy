@@ -18,11 +18,11 @@ services:
 #      DEFAULT_HOST: ${DEFAULT_HOST}
       ENABLE_IPV6: "true"
     volumes:
-      - ${NGINX_FILES_PATH:-./data}/conf.d:/etc/nginx/conf.d
-      - ${NGINX_FILES_PATH:-./data}/vhost.d:/etc/nginx/vhost.d
-      - ${NGINX_FILES_PATH:-./data}/html:/usr/share/nginx/html
-      - ${NGINX_FILES_PATH:-./data}/certs:/etc/nginx/certs:ro
-      - ${NGINX_FILES_PATH:-./data}/htpasswd:/etc/nginx/htpasswd:ro
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - htpasswd:/etc/nginx/htpasswd:ro
     logging:
       driver: ${NGINX_WEB_LOG_DRIVER:-json-file}
       options:
@@ -35,11 +35,11 @@ services:
     container_name: ${DOCKER_GEN_SEVICE_NAME:-nginx-proxy-automation-gen}
     restart: always
     volumes:
-      - ${NGINX_FILES_PATH:-./data}/conf.d:/etc/nginx/conf.d
-      - ${NGINX_FILES_PATH:-./data}/vhost.d:/etc/nginx/vhost.d
-      - ${NGINX_FILES_PATH:-./data}/html:/usr/share/nginx/html
-      - ${NGINX_FILES_PATH:-./data}/certs:/etc/nginx/certs:ro
-      - ${NGINX_FILES_PATH:-./data}/htpasswd:/etc/nginx/htpasswd:ro
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - htpasswd:/etc/nginx/htpasswd:ro
       - ${DOCKER_HOST_ROOTLESS_PATH:-/var/run/docker.sock}:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
     logging:
@@ -53,11 +53,11 @@ services:
     container_name: ${LETS_ENCRYPT_SEVICE_NAME:-nginx-proxy-automation-letsencrypt}
     restart: always
     volumes:
-      - ${NGINX_FILES_PATH:-./data}/conf.d:/etc/nginx/conf.d
-      - ${NGINX_FILES_PATH:-./data}/vhost.d:/etc/nginx/vhost.d
-      - ${NGINX_FILES_PATH:-./data}/html:/usr/share/nginx/html
-      - ${NGINX_FILES_PATH:-./data}/certs:/etc/nginx/certs:rw
-      - ${NGINX_FILES_PATH:-./data}/acme.sh:/etc/acme.sh
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
       - ${DOCKER_HOST_ROOTLESS_PATH:-/var/run/docker.sock}:/var/run/docker.sock:ro
     environment:
       NGINX_DOCKER_GEN_CONTAINER: ${DOCKER_GEN_SEVICE_NAME:-nginx-proxy-automation-gen}
@@ -77,4 +77,12 @@ networks:
   default:
     external: true
     name: ${NETWORK:-proxy}
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  htpasswd:
+  acme:
 
