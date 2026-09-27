@@ -1,5 +1,8 @@
 .env
 .env.*
 !.env.example
+secrets.env
+secrets.env.*
+!secrets.env.example
 .nginx.tmpl.bak
 data/
