@@ -29,7 +29,7 @@ services:
         max-file: ${NGINX_WEB_LOG_MAX_FILE:-10}
 
   nginx-proxy-automation-gen:
-    image: nginxproxy/docker-gen:${DOCKER_GEN_IMAGE_VERSION:-0.7.7}
+    image: nginxproxy/docker-gen:${DOCKER_GEN_IMAGE_VERSION:-0.17.2}
     command: -notify-sighup ${NGINX_WEB_SEVICE_NAME:-nginx-proxy-automation-web} -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     container_name: ${DOCKER_GEN_SEVICE_NAME:-nginx-proxy-automation-gen}
     restart: always
